@@ -3,17 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
-
-# Importing specific estimator classes
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestClassifier
-
-# Importing data splitting utility
-from sklearn.model_selection import train_test_split
-
-# Importing metrics to evaluate performance
-from sklearn.metrics import mean_squared_error, accuracy_score
-
+from sklearn.preprocessing import StandardScaler  # Assuming preprocessor needs this
 
 # Page layout
 st.set_page_config(layout='wide')
@@ -27,28 +17,40 @@ with st.container():
     st.write('Feel free to contact me to receive the dataset & Python notebook.')
 
 # Load Cleaned data
-# Ensure you have uploaded the 'laptop-clean.csv' file on the deployment platform
-df = pd.read_csv('laptop-clean.csv')
+@st.cache  # Cache the data to prevent reloads on every interaction
+def load_data():
+    data = pd.read_csv('laptop-clean.csv')
+    return data
 
-# Load Preprocessor
-# Ensure you have uploaded the 'preprocessor.pkl' file on the deployment platform
-preprocessor = pickle.load(open('preprocessor.pkl', 'rb'))
-model = pickle.load(open('model.pkl', 'rb'))
+df = load_data()
+
+# Load Preprocessor and Model
+@st.cache(allow_output_mutation=True)  # Cache to prevent reloads, allow_output_mutation for larger objects
+def load_model_and_preprocessor():
+    preprocessor = pickle.load(open('preprocessor.pkl', 'rb'))
+    model = pickle.load(open('model.pkl', 'rb'))
+    return preprocessor, model
+
+preprocessor, model = load_model_and_preprocessor()
 
 # Inputs
-
-# Brand & Type
 st.write('Laptop Brand & Type')
 Company = st.selectbox('Company', df['Company'].unique())
-# ...
+# Include more inputs as necessary, ensure they are collected into a DataFrame for processing
 
-# The rest of your Streamlit widgets and functionality here
+# Collect inputs into DataFrame
+# Example of input collection, ensure you collect all necessary inputs
+input_data = {
+    'Company': [Company],
+    # Add other fields here
+}
+
+input_df = pd.DataFrame(input_data)
 
 # Prediction
-# When the user clicks the 'Predict' button, the app will process the inputs and display the prediction
 if st.button('Predict'):
     # Preprocess the new data using the loaded 'preprocessor'
-    new_data_preprocessed = preprocessor.transform(new_data)
+    new_data_preprocessed = preprocessor.transform(input_df)
     
     # Use the preprocessed data to make a prediction with the loaded model
     log_price = model.predict(new_data_preprocessed)  # in log scale
