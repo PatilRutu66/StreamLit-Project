@@ -4,6 +4,17 @@ import pandas as pd
 import numpy as np
 import pickle
 
+# Importing specific estimator classes
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestClassifier
+
+# Importing data splitting utility
+from sklearn.model_selection import train_test_split
+
+# Importing metrics to evaluate performance
+from sklearn.metrics import mean_squared_error, accuracy_score
+
+
 # Page layout
 st.set_page_config(layout='wide')
 
