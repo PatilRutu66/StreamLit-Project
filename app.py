@@ -16,7 +16,7 @@ image = Image.open('Picture.png')
 # Credits
 with st.container():
     st.write('Author : @RutujaPatil')
-    st.write('Linkdin : 'https://www.linkedin.com/in/rutujapatil06/')
+    st.write('Linkdin : https://www.linkedin.com/in/rutujapatil06/')
     st.title('StreamLit Project - Laptops Prices Prediction\n')
     st.write('- <p style="font-size:26px;">This prediction model is designed to forecast laptop costs according to their features. ,A more comprehansive analysis is available on my Github</p>',
     unsafe_allow_html=True)
