@@ -1,4 +1,3 @@
 scikit-learn
 pandas==1.3.4
-streamlit==1.X.X
-
+streamlit==1.33.0
