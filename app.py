@@ -52,31 +52,31 @@ st.write('Operating System')
 OpSys = st.selectbox('Operating System', df['OpSys'].unique())
 
 # Prepare input data for prediction
-input_data = {
-    'Company': [Company],
-    'TypeName': [TypeName],
-    'Inches': [Inches],
-    'RamGB': [RamGB],
-    'OpSys': [OpSys],
-    'WeightKG': [WeightKG],
-    'GHz': [GHz],
-    'CpuBrand': [CpuBrand],
-    'CpuVersion': [CpuVersion],
-    'MainMemory': [MainMemory],
-    'SecondMemory': [SecondMemory],
-    'MainMemoryType': [MainMemoryType],
-    'SecondMemoryType': [SecondMemoryType],
-    'TouchScreen': [1 if TouchScreen == 'Yes' else 0],
-    'Resolution': [Resolution],
-    'PanelType': [PanelType],
-    'GpuBrand': [GpuBrand],
-    'GpuVersion': [GpuVersion]
-}
-input_df = pd.DataFrame(input_data)
-
+new_data = {'Company': Company, 'TypeName': TypeName, 'Inches': Inches, 'RamGB': RamGB, 
+        'OpSys': OpSys,
+         'WeightKG': WeightKG, 'GHz': GHz, 'CpuBrand': CpuBrand, 'CpuVersion': CpuVersion, 
+         'MainMemory': MainMemory, 'SecondMemory': SecondMemory,
+         'MainMemoryType':MainMemoryType ,'SecondMemoryType':SecondMemoryType,
+         'TouchScreen':TouchScreen,'Resolution':Resolution,
+         'PanelType':PanelType , 'GpuBrand':GpuBrand,'GpuVersion':GpuVersion}
+new_data = pd.DataFrame(new_data, index=[0])
+new_data_preprocessed = preprocessor.transform(new_data)
+st.write('- <p style="font-size:26px;"> Laptop Specs</p>',unsafe_allow_html=True)
+new_data
 # Prediction
-if st.button('Predict'):
-    new_data_preprocessed = preprocessor.transform(input_df)
-    log_price = model.predict(new_data_preprocessed)
-    price = np.expm1(log_price)
-    st.markdown(f'### Predicted Price in USD: {price[0]:.2f}')
+log_price = model.predict(new_data_preprocessed) # in log scale
+price = np.expm1(log_price) # in original scale
+with st.container():
+    coll1, coll2, coll3 = st.columns([3,6,1])
+
+    with coll1:
+            st.write("     ")
+
+    with coll2:
+                # Output
+            if st.button('Predict'):
+                 st.markdown('# Price in USD:')
+                 price[0]
+
+    with coll3:
+            st.write("")
