@@ -1,8 +1,7 @@
 scikit-learn
 pandas==2.2.2
 streamlit==1.33.0
-xgboost==1.5.0
+xgboost==2.0.3
 numpy>=1.23.2
 category_encoders==2.2.2
-
 
