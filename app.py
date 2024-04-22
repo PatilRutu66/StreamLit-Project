@@ -1,5 +1,3 @@
-import streamlit as st
-
 # Import libraries
 
 import streamlit as st
@@ -8,6 +6,12 @@ import numpy as np
 import pickle
 from PIL import Image
 import category_encoders as ce
+import sklearn
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, accuracy_score
+
 
 st.title('My Streamlit App')
 # Page layout
