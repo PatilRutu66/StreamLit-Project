@@ -92,8 +92,8 @@ GpuBrand = st.selectbox('Gpu Brand',np.sort(df[(df['Company']== Company)&(df['Ty
 GpuVersion = st.selectbox('Gpu Version',np.sort(df[(df['Company']== Company)&(df['TypeName'] ==TypeName)&(df['GpuBrand']==GpuBrand)].groupby('GpuVersion')['GpuVersion'].count().index))
 
 # Operating system
-#st.write('- <p style="font-size:22px;"> Operating System</p>',unsafe_allow_html=True)
-#OpSys = st.selectbox('Operating System',np.sort(df[(df['Company']== Company)].groupby('OpSys')['OpSys'].count().index))
+st.write('- <p style="font-size:22px;"> Operating System</p>',unsafe_allow_html=True)
+OpSys = st.selectbox('Operating System',np.sort(df[(df['Company']== Company)].groupby('OpSys')['OpSys'].count().index))
 
 
 # Preprocessing
