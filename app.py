@@ -14,13 +14,9 @@ image = Image.open('Picture.png')
 
 # Credits
 with st.container():
-    st.write('Author : @MostafaAbdelbadie')
-    st.write('Linkdin : https://www.linkedin.com/in/mostafa-abdelbadie')
-    st.write('Whatsapp Number : (+20) 1142359150')
+    st.write('Author : @Rutuja Patil')
     st.title('Laptops Prices Prediction\n')
     st.write('- <p style="font-size:26px;">This is a prediciton model made to predict the prices of laptops based on their featurs ,A more comprehansive analysis is available on my Github</p>',
-    unsafe_allow_html=True)
-    st.write('- <p style="font-size:26px;"> Feel free to contact me to recieve the dataset & python notebook</p>',
     unsafe_allow_html=True)
     coll1, coll2, coll3 = st.columns([3,6,1])
 
