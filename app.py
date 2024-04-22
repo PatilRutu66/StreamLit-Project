@@ -5,25 +5,22 @@ import pandas as pd
 import numpy as np
 import pickle
 from PIL import Image
-import category_encoders as ce
-import sklearn
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, accuracy_score
-
 
 # Page layout
 st.set_page_config(layout='wide' )
 
 # Image
-image = Image.open('Picture.jpg')
+image = Image.open('Picture.png')
 
 # Credits
 with st.container():
-    st.write('Author : @Rutuja Patil')
-    st.title('My Streamlit App')
+    st.write('Author : @MostafaAbdelbadie')
+    st.write('Linkdin : https://www.linkedin.com/in/mostafa-abdelbadie')
+    st.write('Whatsapp Number : (+20) 1142359150')
+    st.title('Laptops Prices Prediction\n')
     st.write('- <p style="font-size:26px;">This is a prediciton model made to predict the prices of laptops based on their featurs ,A more comprehansive analysis is available on my Github</p>',
+    unsafe_allow_html=True)
+    st.write('- <p style="font-size:26px;"> Feel free to contact me to recieve the dataset & python notebook</p>',
     unsafe_allow_html=True)
     coll1, coll2, coll3 = st.columns([3,6,1])
 
