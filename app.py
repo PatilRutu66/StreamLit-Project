@@ -17,7 +17,7 @@ from sklearn.metrics import mean_squared_error, accuracy_score
 st.set_page_config(layout='wide' )
 
 # Image
-image = Image.open('Picture.png')
+image = Image.open('Picture.jpg')
 
 # Credits
 with st.container():
