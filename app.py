@@ -5,14 +5,29 @@ import pandas as pd
 import numpy as np
 import pickle
 
+
 # Page layout
-st.set_page_config(layout='wide')
+st.set_page_config(layout='wide' )
+
 
 # Credits
 with st.container():
-    st.write('Author : Rutuja Patil')
+    st.write('Author : @MostafaAbdelbadie')
+    st.write('Linkdin : https://www.linkedin.com/in/mostafa-abdelbadie')
+    st.write('Whatsapp Number : (+20) 1142359150')
     st.title('Laptops Prices Prediction\n')
-    st.write('This prediction model is designed to predict the prices of laptops based on their features.')
+    st.write('- <p style="font-size:26px;">This is a prediciton model made to predict the prices of laptops based on their featurs ,A more comprehansive analysis is available on my Github</p>',
+    unsafe_allow_html=True)
+    st.write('- <p style="font-size:26px;"> Feel free to contact me to recieve the dataset & python notebook</p>',
+    unsafe_allow_html=True)
+    coll1, coll2, coll3 = st.columns([3,6,1])
+
+    with coll1:
+            st.write("     ")
+            
+
+    with coll2:
+            st.write("")
 
 # Load Cleaned data
 df = pd.read_csv('laptop-clean.csv')
@@ -22,36 +37,56 @@ preprocessor = pickle.load(open('preprocessor.pkl', 'rb'))
 model = pickle.load(open('model.pkl', 'rb'))
 
 # Inputs
-st.write('Laptop Brand & Type')
-Company = st.selectbox('Company', df['Company'].unique())
-TypeName = st.selectbox('Type', df['TypeName'].unique())
-WeightKG = st.number_input('Weight (KG)')
-TouchScreen = st.selectbox('Touch Screen', ['Yes', 'No'])
-PanelType = st.selectbox('Panel Type', df['PanelType'].unique())
-Resolution = st.selectbox('Resolution', df['Resolution'].unique())
-Inches = st.number_input('Screen Size (Inches)')
 
-st.write('Processor')
-RamGB = st.number_input('RAM (GB)')
-CpuBrand = st.selectbox('CPU Brand', df['CpuBrand'].unique())
-GHz = st.number_input('CPU Speed (GHz)')
-CpuVersion = st.selectbox('CPU Version', df['CpuVersion'].unique())
+# Brand & Type
+st.write('- <p style="font-size:26px;"> Laptop Brand & Type</p>',unsafe_allow_html=True)
+Company = st.selectbox('Company',df['Company'].unique())
+TypeName = st.selectbox('Type',df[df['Company']== Company].groupby('TypeName')['TypeName'].value_counts().index)
+WeightKG = st.selectbox('Weight?', np.sort(df[(df['Company']== Company)&(df['TypeName'] ==TypeName)].groupby('WeightKG')['WeightKG'].count().index))
+# Screen Inputs
+st.write('- <p style="font-size:26px;"> Screen Specs</p>',unsafe_allow_html=True)
+TouchScreen = st.selectbox('Does it has a Touch Screen?',('Yes','No'))
+if TouchScreen == 'Yes':
+        TouchScreen = 1
+else:
+        TouchScreen = 0
+PanelType = st.selectbox(('PanelType'),df['PanelType'].unique())
+Resolution = st.selectbox('Resolution',np.sort(df[(df['Company']== Company)&(df['TypeName'] ==TypeName)].groupby('Resolution')['Resolution'].count().index))
+Inches = st.number_input('Inches',df[(df['Company']== Company)&(df['TypeName'] ==TypeName)].groupby('Inches')['Inches'].count().index[0],df[(df['Company']== Company)&(df['TypeName'] ==TypeName)].groupby('Inches')['Inches'].count().index[-1])
 
-st.write('Storage')
-MainMemory = st.number_input('Main Memory (GB)')
-MainMemoryType = st.selectbox('Main Memory Type', df['MainMemoryType'].unique())
-secMem = st.checkbox('Secondary Memory')
-SecondMemory = st.number_input('Second Memory (GB)') if secMem else 0
-SecondMemoryType = st.selectbox('Second Memory Type', df['SecondMemoryType'].unique()) if secMem else 'None'
+# Specs
+## Processor & Ram
+st.write('- <p style="font-size:26px;"> Processor</p>',unsafe_allow_html=True)
+RamGB = st.selectbox('Ram GB', np.sort(df[(df['Company']== Company)&(df['TypeName'] ==TypeName)].groupby('RamGB')['RamGB'].count().index))
+CpuBrand = st.selectbox('Cpu Brand',np.sort(df[(df['Company']== Company)&(df['TypeName'] ==TypeName)].groupby('CpuBrand')['CpuBrand'].count().index))
+GHz = st.selectbox('GHz',np.sort(df[(df['Company']== Company)&(df['TypeName'] ==TypeName)&(df['CpuBrand']==CpuBrand)].groupby('GHz')['GHz'].count().index))
+CpuVersion = st.selectbox('Cpu Version',np.sort(df[(df['Company']== Company)&(df['TypeName'] ==TypeName)&(df['CpuBrand']==CpuBrand) &(df['GHz']==GHz)].groupby('CpuVersion')['CpuVersion'].count().index))
 
-st.write('Graphics Card')
-GpuBrand = st.selectbox('GPU Brand', df['GpuBrand'].unique())
-GpuVersion = st.selectbox('GPU Version', df['GpuVersion'].unique())
+## Hard 
+st.write('- <p style="font-size:26px;"> Hard disk capcity</p>',unsafe_allow_html=True)
+MainMemory = st.selectbox('Main Memory GB',np.sort(df[(df['Company']== Company)&(df['TypeName'] ==TypeName)].groupby('MainMemory')['MainMemory'].count().index))
+MainMemoryType = st.selectbox('Main Memory Type',df[(df['Company']== Company)&(df['MainMemory']==MainMemory)].groupby('MainMemoryType')['MainMemoryType'].count().index)
+st.write('Does it has an Extra Hard driver?')
+secMem = st.checkbox(label='Yes')
+if secMem:
+        st.write('Please enter Second Memory specs')
+        SecondMemory = st.selectbox('Second Memory GB',np.sort(df['SecondMemory'].unique())[1:])
+        SecondMemoryType = st.selectbox('Second Memory Type',df['SecondMemoryType'].unique()[1:])
+else:
+        SecondMemory = 0.0
+        SecondMemoryType = 'None'
 
-st.write('Operating System')
-OpSys = st.selectbox('Operating System', df['OpSys'].unique())
+## Vega Card
+st.write('- <p style="font-size:26px;"> Vega Card</p>',unsafe_allow_html=True)
+GpuBrand = st.selectbox('Gpu Brand',np.sort(df[(df['Company']== Company)&(df['TypeName'] ==TypeName)].groupby('GpuBrand')['GpuBrand'].count().index))
+GpuVersion = st.selectbox('Gpu Version',np.sort(df[(df['Company']== Company)&(df['TypeName'] ==TypeName)&(df['GpuBrand']==GpuBrand)].groupby('GpuVersion')['GpuVersion'].count().index))
 
-# Prepare input data for prediction
+# Operating system
+st.write('- <p style="font-size:22px;"> Operating System</p>',unsafe_allow_html=True)
+OpSys = st.selectbox('Operating System',np.sort(df[(df['Company']== Company)].groupby('OpSys')['OpSys'].count().index))
+
+
+# Preprocessing
 new_data = {'Company': Company, 'TypeName': TypeName, 'Inches': Inches, 'RamGB': RamGB, 
         'OpSys': OpSys,
          'WeightKG': WeightKG, 'GHz': GHz, 'CpuBrand': CpuBrand, 'CpuVersion': CpuVersion, 
