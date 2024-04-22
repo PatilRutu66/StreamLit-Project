@@ -8,9 +8,6 @@ import pickle
 # Page layout
 st.set_page_config(layout='wide')
 
-# Image
-image = Image.open('Picture.png')
-
 # Credits
 with st.container():
     st.write('Author : Your Name')
