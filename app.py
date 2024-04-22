@@ -10,7 +10,7 @@ from PIL import Image
 st.set_page_config(layout='wide' )
 
 # Image
-image = Image.open('Picture.png')
+image = Image.open('Picture.jpg')
 
 # Credits
 with st.container():
