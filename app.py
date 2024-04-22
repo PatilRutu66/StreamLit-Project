@@ -8,54 +8,80 @@ import pickle
 # Page layout
 st.set_page_config(layout='wide')
 
+# Image
+image = Image.open('Picture.png')
+
 # Credits
 with st.container():
-    st.write('Author : @RutujaPatil')
-    st.write('LinkedIn : https://www.linkedin.com/in/rutujapatil06/')
-    st.title('StreamLit Project - Laptop Prices Prediction\n')
-    st.write('This prediction model is designed to forecast laptop costs according to their features. A more comprehensive analysis is available on my Github.')
-    st.write('Feel free to contact me to receive the dataset & Python notebook.')
+    st.write('Author : Your Name')
+    st.write('LinkedIn : Your LinkedIn URL')
+    st.write('Github : Your Github URL')
+    st.title('Laptops Prices Prediction\n')
+    st.write('This prediction model is designed to predict the prices of laptops based on their features.')
 
 # Load Cleaned data
-@st.cache  # Cache the data to prevent reloads on every interaction
-def load_data():
-    data = pd.read_csv('laptop-clean.csv')
-    return data
+df = pd.read_csv('laptop-clean.csv')
 
-df = load_data()
-
-# Load Preprocessor and Model
-@st.cache(allow_output_mutation=True)  # Cache to prevent reloads, allow_output_mutation for larger objects
-def load_model_and_preprocessor():
-    preprocessor = pickle.load(open('preprocessor.pkl', 'rb'))
-    model = pickle.load(open('model.pkl', 'rb'))
-    return preprocessor, model
-
-preprocessor, model = load_model_and_preprocessor()
+# Load Preprocessor
+preprocessor = pickle.load(open('preprocessor.pkl', 'rb'))
+model = pickle.load(open('model.pkl', 'rb'))
 
 # Inputs
 st.write('Laptop Brand & Type')
 Company = st.selectbox('Company', df['Company'].unique())
-# Include more inputs as necessary, ensure they are collected into a DataFrame for processing
+TypeName = st.selectbox('Type', df['TypeName'].unique())
+WeightKG = st.number_input('Weight (KG)')
+TouchScreen = st.selectbox('Touch Screen', ['Yes', 'No'])
+PanelType = st.selectbox('Panel Type', df['PanelType'].unique())
+Resolution = st.selectbox('Resolution', df['Resolution'].unique())
+Inches = st.number_input('Screen Size (Inches)')
 
-# Collect inputs into DataFrame
-# Example of input collection, ensure you collect all necessary inputs
+st.write('Processor')
+RamGB = st.number_input('RAM (GB)')
+CpuBrand = st.selectbox('CPU Brand', df['CpuBrand'].unique())
+GHz = st.number_input('CPU Speed (GHz)')
+CpuVersion = st.selectbox('CPU Version', df['CpuVersion'].unique())
+
+st.write('Storage')
+MainMemory = st.number_input('Main Memory (GB)')
+MainMemoryType = st.selectbox('Main Memory Type', df['MainMemoryType'].unique())
+secMem = st.checkbox('Secondary Memory')
+SecondMemory = st.number_input('Second Memory (GB)') if secMem else 0
+SecondMemoryType = st.selectbox('Second Memory Type', df['SecondMemoryType'].unique()) if secMem else 'None'
+
+st.write('Graphics Card')
+GpuBrand = st.selectbox('GPU Brand', df['GpuBrand'].unique())
+GpuVersion = st.selectbox('GPU Version', df['GpuVersion'].unique())
+
+st.write('Operating System')
+OpSys = st.selectbox('Operating System', df['OpSys'].unique())
+
+# Prepare input data for prediction
 input_data = {
     'Company': [Company],
-    # Add other fields here
+    'TypeName': [TypeName],
+    'Inches': [Inches],
+    'RamGB': [RamGB],
+    'OpSys': [OpSys],
+    'WeightKG': [WeightKG],
+    'GHz': [GHz],
+    'CpuBrand': [CpuBrand],
+    'CpuVersion': [CpuVersion],
+    'MainMemory': [MainMemory],
+    'SecondMemory': [SecondMemory],
+    'MainMemoryType': [MainMemoryType],
+    'SecondMemoryType': [SecondMemoryType],
+    'TouchScreen': [1 if TouchScreen == 'Yes' else 0],
+    'Resolution': [Resolution],
+    'PanelType': [PanelType],
+    'GpuBrand': [GpuBrand],
+    'GpuVersion': [GpuVersion]
 }
-
 input_df = pd.DataFrame(input_data)
 
 # Prediction
 if st.button('Predict'):
-    # Preprocess the new data using the loaded 'preprocessor'
     new_data_preprocessed = preprocessor.transform(input_df)
-    
-    # Use the preprocessed data to make a prediction with the loaded model
-    log_price = model.predict(new_data_preprocessed)  # in log scale
-    price = np.expm1(log_price)  # in original scale
-
-    # Output the prediction to the user
-    st.markdown('### Price in USD:')
-    st.write(price[0])
+    log_price = model.predict(new_data_preprocessed)
+    price = np.expm1(log_price)
+    st.markdown(f'### Predicted Price in USD: {price[0]:.2f}')
