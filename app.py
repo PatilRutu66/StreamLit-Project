@@ -15,7 +15,7 @@ image = Image.open('Picture.jpg')
 # Credits
 with st.container():
     st.write('Author: @Rutuja Patil')
-    st.write('GitHub: @https://github.com/PatilRutu66')
+    st.write('GitHub: https://github.com/PatilRutu66')
     st.title('StreamLit application for Laptop Price Predictions\n')
     st.write('- <p style="font-size:26px;">This prediction application estimates laptop prices based on their features and specifications.</p>', unsafe_allow_html=True)
     coll1, coll2, coll3 = st.columns([3, 6, 1])
