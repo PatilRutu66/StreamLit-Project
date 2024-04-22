@@ -10,9 +10,7 @@ st.set_page_config(layout='wide')
 
 # Credits
 with st.container():
-    st.write('Author : Your Name')
-    st.write('LinkedIn : Your LinkedIn URL')
-    st.write('Github : Your Github URL')
+    st.write('Author : Rutuja Patil')
     st.title('Laptops Prices Prediction\n')
     st.write('This prediction model is designed to predict the prices of laptops based on their features.')
 
